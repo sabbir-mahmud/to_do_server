@@ -72,11 +72,35 @@ const completeTask = async (req, res) => {
   }
 }
 
+const updateTask = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await toDoModel.findById(id);
+    if (data) {
+      const task = req.body.task
+      if (task) {
+        const result = await data.update({
+          name: task,
+          is_done: false
+        })
+        return res.send(result)
+      } else {
+        return res.send({
+          message: 'No task Found'
+        })
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   getTasks,
   getTask,
   createTask,
-  completeTask
+  completeTask,
+  updateTask
 
 
 };
