@@ -43,7 +43,6 @@ const createTask = async (req, res) => {
         message: "Please fill the required fields"
       })
     }
-
   } catch (error) {
     console.log(error);
 
@@ -55,7 +54,6 @@ const completeTask = async (req, res) => {
   try {
     const id = req.params.id;
     const task = await toDoModel.findById(id);
-    console.log(id);
     if (task) {
       const result = await task.update({
         is_done: true
@@ -66,7 +64,6 @@ const completeTask = async (req, res) => {
         message: "task not found"
       })
     }
-
   } catch (error) {
     console.log(error);
   }
@@ -86,13 +83,36 @@ const updateTask = async (req, res) => {
         return res.send(result)
       } else {
         return res.send({
-          message: 'No task Found'
+          message: 'Please fill the required fields'
         })
       }
+    } else {
+      return res.send({
+        message: "No Task Found"
+      })
     }
   } catch (error) {
     console.log(error);
   }
+}
+
+const deleteTask = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await toDoModel.findById(id);
+    if (data) {
+      const result = await data.remove();
+      return res.send(result);
+    } else {
+      return res.send({
+        message: "Task Not Found"
+      })
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 export {
@@ -100,8 +120,7 @@ export {
   getTask,
   createTask,
   completeTask,
-  updateTask
-
-
+  updateTask,
+  deleteTask
 };
 
